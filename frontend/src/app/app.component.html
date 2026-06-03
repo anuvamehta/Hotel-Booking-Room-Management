@@ -1,0 +1,44 @@
+<div class="page">
+  <h1>Hotel Room Reservation</h1>
+
+  <div class="controls">
+    <input
+      type="number"
+      min="1"
+      max="5"
+      [(ngModel)]="roomsToBook"
+      placeholder="No of Rooms"
+      aria-label="Number of rooms"
+    />
+    <button class="primary" (click)="book()" [disabled]="loading">Book</button>
+    <button (click)="reset()">Reset</button>
+    <button (click)="random()">Random</button>
+  </div>
+
+  <p class="message" *ngIf="message">{{ message }}</p>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <div class="legend">
+    <span><i class="swatch available"></i> Available</span>
+    <span><i class="swatch booked"></i> Booked</span>
+    <span><i class="swatch just-booked"></i> This booking</span>
+  </div>
+
+  <div class="hotel">
+    <div class="floor" *ngFor="let row of floors">
+      <div class="floor-label">F{{ row.floor }}</div>
+      <div class="stairs" title="Staircase / Lift">⇅</div>
+      <div class="rooms">
+        <div
+          class="room"
+          *ngFor="let room of row.rooms"
+          [class.booked]="room.isBooked && !isJustBooked(room)"
+          [class.just-booked]="isJustBooked(room)"
+          [title]="'Room ' + room.roomNumber"
+        >
+          {{ room.roomNumber }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
