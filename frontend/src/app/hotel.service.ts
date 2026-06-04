@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 export interface Room {
   roomNumber: number;
@@ -16,7 +17,7 @@ export interface BookResult {
 
 @Injectable({ providedIn: 'root' })
 export class HotelService {
-  private readonly base = 'http://localhost:3001/api';
+  private readonly base = environment.apiBase;
 
   constructor(private http: HttpClient) {}
 

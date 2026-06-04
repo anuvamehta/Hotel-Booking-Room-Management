@@ -1,17 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const { port, mongoUri } = require('./src/config');
-const { router, ensureSeeded } = require('./src/routes/rooms');
+const { app, connectDB } = require('./src/app');
+const { port } = require('./src/config');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use('/api', router);
-
-mongoose
-  .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(ensureSeeded)
+connectDB()
   .then(() => {
     app.listen(port, () => console.log(`API listening on port ${port}`));
   })
