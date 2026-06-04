@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   message = '';
   error = '';
   loading = false;
+  roomsLoading = false;
 
   constructor(private hotel: HotelService) {}
 
@@ -41,9 +42,16 @@ export class AppComponent implements OnInit {
   }
 
   loadRooms(): void {
+    this.roomsLoading = true;
     this.hotel.getRooms().subscribe({
-      next: (rooms) => this.render(rooms),
-      error: () => (this.error = 'Cannot reach the API. Is the backend running?'),
+      next: (rooms) => {
+        this.render(rooms);
+        this.roomsLoading = false;
+      },
+      error: () => {
+        this.error = 'Cannot reach the API. Is the backend running?';
+        this.roomsLoading = false;
+      },
     });
   }
 
@@ -66,21 +74,33 @@ export class AppComponent implements OnInit {
 
   random(): void {
     this.clearMessages();
+    this.roomsLoading = true;
     this.hotel.random().subscribe({
-      next: (rooms) => this.render(rooms),
-      error: () => (this.error = 'Could not generate random occupancy.'),
+      next: (rooms) => {
+        this.render(rooms);
+        this.roomsLoading = false;
+      },
+      error: () => {
+        this.error = 'Could not generate random occupancy.';
+        this.roomsLoading = false;
+      },
     });
   }
 
   reset(): void {
     this.clearMessages();
     this.lastBooked = [];
+    this.roomsLoading = true;
     this.hotel.reset().subscribe({
       next: (rooms) => {
         this.render(rooms);
         this.message = 'All bookings cleared.';
+        this.roomsLoading = false;
       },
-      error: () => (this.error = 'Could not reset bookings.'),
+      error: () => {
+        this.error = 'Could not reset bookings.';
+        this.roomsLoading = false;
+      },
     });
   }
 

@@ -10,9 +10,9 @@
       placeholder="No of Rooms"
       aria-label="Number of rooms"
     />
-    <button class="primary" (click)="book()" [disabled]="loading">Book</button>
-    <button (click)="reset()">Reset</button>
-    <button (click)="random()">Random</button>
+    <button class="primary" (click)="book()" [disabled]="loading || roomsLoading">Book</button>
+    <button (click)="reset()" [disabled]="roomsLoading">Reset</button>
+    <button (click)="random()" [disabled]="roomsLoading">Random</button>
   </div>
 
   <p class="message" *ngIf="message">{{ message }}</p>
@@ -24,7 +24,12 @@
     <span><i class="swatch just-booked"></i> This booking</span>
   </div>
 
-  <div class="hotel">
+  <div class="loader" *ngIf="roomsLoading">
+    <span class="spinner" aria-hidden="true"></span>
+    <span>Loading rooms…</span>
+  </div>
+
+  <div class="hotel" *ngIf="!roomsLoading">
     <div class="floor" *ngFor="let row of floors">
       <div class="floor-label">F{{ row.floor }}</div>
       <div class="stairs" title="Staircase / Lift">⇅</div>
